@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentation & Flowchart Standard ISO - Optimasi Persediaan C++</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Fira Code -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #090d16;
+            color: #f1f5f9;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .slide-fade-in {
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Syntax Highlight Styles */
+        .code-keyword { color: #f472b6; font-weight: 600; }
+        .code-type { color: #38bdf8; font-weight: 500; }
+        .code-string { color: #4ade80; }
+        .code-number { color: #fbbf24; }
+        .code-comment { color: #64748b; font-style: italic; }
+        .code-func { color: #c084fc; font-weight: 600; }
+        .code-preproc { color: #fb7185; font-weight: 600; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-4 lg:px-8 py-3.5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg font-bold text-lg">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div>
+                    <h1 class="text-base font-extrabold tracking-tight text-white flex items-center gap-2">
+                        FLOWCHART SIMBOL ISO & PRESENTASI
+                        <span class="text-[10px] uppercase tracking-wider bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20">EOQ & ROP</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 font-medium">Standard Symbols: Terminator, Preparation, Manual Input, Process, Decision, Display</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button onclick="copyCppCode()" class="px-3.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-lg shadow-blue-600/25 transition flex items-center gap-2">
+                    <i class="fas fa-copy"></i>
+                    <span class="hidden sm:inline">Salin Kode C++ Utuh</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 flex flex-col gap-6">
+
+        <!-- PRESENTATION SLIDE CONTAINER -->
+        <div id="slideViewport" class="flex-1 min-h-[620px] glass-card rounded-2xl p-6 lg:p-10 flex flex-col justify-between relative overflow-hidden">
+            
+            <!-- SLIDE SLOTS -->
+            <div id="slideContent" class="flex-1 relative z-10 flex flex-col justify-center">
+
+                <!-- SLIDE 1: COVER -->
+                <div class="slide-item slide-fade-in block space-y-6 text-center max-w-3xl mx-auto py-8">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold">
+                        <i class="fas fa-code"></i> Logika Pemmrogramman-Teknik Industri
+                    </div>
+                    <h2 class="text-3xl lg:text-5xl font-black text-white tracking-tight leading-tight">
+                        Optimasi Persediaan <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400"></span>
+                    </h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-left pt-4">
+                        <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Perulangan</p>
+                            <p class="text-sm font-semibold text-emerald-400 font-mono">while (ulang)</p>
+                        </div>
+                        <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Percabangan</p>
+                            <p class="text-sm font-semibold text-pink-400 font-mono">if (stok <= rop)</p>
+                        </div>
+                        <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Simbol Flowchart</p>
+                            <p class="text-sm font-semibold text-amber-400 font-mono">Standard ISO</p>
+                        </div>
+                        <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Kode C++</p>
+                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">If Else & While</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 2: PENJELASAN STRUKTUR BAHASA C++ -->
+                <div class="slide-item slide-fade-in hidden space-y-6">
+                    <div class="border-b border-slate-800 pb-3">
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Slide 2 • Bahasa & Struktur C++</span>
+                        <h2 class="text-2xl font-extrabold text-white mt-1">Struktur Codingan C++ yang Digunakan</h2>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-900/90 p-5 rounded-xl border border-slate-800 space-y-3">
+                            <h3 class="text-sm font-bold text-blue-400 flex items-center gap-2">
+                                <i class="fas fa-boxes"></i> Header Library & Variabel
+                            </h3>
+                            <ul class="text-xs space-y-2 text-slate-300">
+                                <li><code class="text-pink-400 font-mono bg-slate-950 px-1 py-0.5 rounded">#include &lt;iostream&gt;</code> : Input/Output stream (<code class="text-blue-300">cin</code>, <code class="text-blue-300">cout</code>).</li>
+                                <li><code class="text-pink-400 font-mono bg-slate-950 px-1 py-0.5 rounded">#include &lt;string&gt;</code> : Tipe data teks untuk nama barang.</li>
+                                <li><code class="text-pink-400 font-mono bg-slate-950 px-1 py-0.5 rounded">#include &lt;cmath&gt;</code> : Perhitungan matematika <code class="text-amber-300">sqrt()</code> dan <code class="text-amber-300">round()</code>.</li>
+                                <li><code class="text-pink-400 font-mono bg-slate-950 px-1 py-0.5 rounded">#include &lt;iomanip&gt;</code> : Format presisi angka desimal <code class="text-emerald-300">setprecision(2)</code>.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-900/90 p-5 rounded-xl border border-slate-800 space-y-3">
+                            <h3 class="text-sm font-bold text-amber-400 flex items-center gap-2">
+                                <i class="fas fa-sliders"></i> Nilai Konstan Otomatis
+                            </h3>
+                            <p class="text-xs text-slate-300">
+                                Program secara otomatis mendefinisikan konstanta perhitungan tanpa perlu diinput manual setiap kali perhitungan:
+                            </p>
+                            <div class="bg-slate-950 p-3 rounded-lg font-mono text-xs border border-slate-800 text-amber-300 space-y-1">
+                                <div>float hariKerja = 300.0f; // Operational days</div>
+                                <div>float safetyStock = 200.0f; // Safety stock level</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 3: PENJELASAN LOGIKA WHILE & IF-ELSE -->
+                <div class="slide-item slide-fade-in hidden space-y-6">
+                    <div class="border-b border-slate-800 pb-3">
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Slide 3 • Kontrol Alur Pemrograman</span>
+                        <h2 class="text-2xl font-extrabold text-white mt-1">Logika Perulangan (WHILE) & Percabangan (IF-ELSE)</h2>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-slate-900/90 p-5 rounded-xl border border-blue-500/30 space-y-3">
+                            <h3 class="text-sm font-bold text-blue-400 flex items-center gap-2">
+                                <i class="fas fa-rotate"></i> 1. Perulangan (WHILE Loop)
+                            </h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Digunakan untuk mengulang pengujian atau kalkulasi data barang lain selama variabel <code class="text-blue-300 font-mono">ulang</code> bernilai <code class="text-emerald-300 font-mono">'y'</code> atau <code class="text-emerald-300 font-mono">'Y'</code>.
+                            </p>
+                            <div class="bg-slate-950 p-3 rounded-lg font-mono text-xs border border-slate-800 text-slate-200">
+                                <span class="code-keyword">while</span> (ulang == <span class="code-string">'y'</span> || ulang == <span class="code-string">'Y'</span>) {<br>
+                                &nbsp;&nbsp;<span class="code-comment">// ... blok perhitungan barang ...</span><br>
+                                &nbsp;&nbsp;cout &lt;&lt; <span class="code-string">"Hitung barang lain? (y/n): "</span>;<br>
+                                &nbsp;&nbsp;cin &gt;&gt; ulang;<br>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/90 p-5 rounded-xl border border-pink-500/30 space-y-3">
+                            <h3 class="text-sm font-bold text-pink-400 flex items-center gap-2">
+                                <i class="fas fa-code-branch"></i> 2. Percabangan (IF-ELSE)
+                            </h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Memeriksa kondisi apakah <code class="text-blue-300 font-mono">stokSaatIni</code> kurang dari atau sama dengan nilai <code class="text-emerald-300 font-mono">rop</code> untuk memberikan status peringatan reorder.
+                            </p>
+                            <div class="bg-slate-950 p-3 rounded-lg font-mono text-xs border border-slate-800 text-slate-200">
+                                <span class="code-keyword">if</span> (stokSaatIni &lt;= rop) {<br>
+                                &nbsp;&nbsp;cout &lt;&lt; <span class="code-string">"STATUS: PERINGATAN! Segera reorder!\n"</span>;<br>
+                                } <span class="code-keyword">else</span> {<br>
+                                &nbsp;&nbsp;cout &lt;&lt; <span class="code-string">"STATUS: AMAN. Stok masih di atas ROP.\n"</span>;<br>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 4: SOURCE CODE C++ LENGKAP UTUH (BAGIAN 1) -->
+                <div class="slide-item slide-fade-in hidden space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div>
+                            <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Slide 4 • Source Code C++ Utuh (Baris 1 - 32)</span>
+                            <h2 class="text-xl font-bold text-white mt-0.5">Include Library, While Loop, & Input</h2>
+                        </div>
+                        <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded font-mono">C++ Source Code</span>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs overflow-x-auto text-slate-300 leading-relaxed max-h-[380px]">
+                        <pre><code><span class="code-preproc">#include &lt;iostream&gt;</span>
+<span class="code-preproc">#include &lt;string&gt;</span>
+<span class="code-preproc">#include &lt;cmath&gt;</span>
+<span class="code-preproc">#include &lt;iomanip&gt;</span>
+
+<span class="code-keyword">using namespace</span> std;
+
+<span class="code-type">int</span> <span class="code-func">main</span>() {
+    <span class="code-type">char</span> ulang = <span class="code-string">'y'</span>;
+
+    <span class="code-comment">// 1. STRUKTUR PERULANGAN (WHILE)</span>
+    <span class="code-keyword">while</span> (ulang == <span class="code-string">'y'</span> || ulang == <span class="code-string">'Y'</span>) {
+        string namaBarang;
+        <span class="code-type">float</span> D, S, H, L, stokSaatIni;
+
+        <span class="code-comment">// Nilai Otomatis / Konstan</span>
+        <span class="code-type">float</span> hariKerja = <span class="code-number">300.0f</span>;
+        <span class="code-type">float</span> safetyStock = <span class="code-number">200.0f</span>;
+
+        cout &lt;&lt; <span class="code-string">"==========================================\n"</span>;
+        cout &lt;&lt; <span class="code-string">"     PROGRAM OPTIMASI PERSEDIAAN (EOQ)    \n"</span>;
+        cout &lt;&lt; <span class="code-string">"==========================================\n"</span>;
+
+        <span class="code-comment">// Input Data Persediaan</span>
+        cout &lt;&lt; <span class="code-string">"Nama Barang               : "</span>;
+        cin &gt;&gt; ws;
+        <span class="code-func">getline</span>(cin, namaBarang);
+
+        cout &lt;&lt; <span class="code-string">"Permintaan Tahunan (D)    : "</span>; cin &gt;&gt; D;
+        cout &lt;&lt; <span class="code-string">"Biaya Pesan (S) [Rp]      : "</span>; cin &gt;&gt; S;
+        cout &lt;&lt; <span class="code-string">"Biaya Simpan/Unit (H) [Rp]: "</span>; cin &gt;&gt; H;
+        cout &lt;&lt; <span class="code-string">"Lead Time (L) [Hari]      : "</span>; cin &gt;&gt; L;
+        cout &lt;&lt; <span class="code-string">"Stok Gudang Saat Ini      : "</span>; cin &gt;&gt; stokSaatIni;</code></pre>
+                    </div>
+                </div>
+
+                <!-- SLIDE 5: SOURCE CODE C++ LENGKAP UTUH (BAGIAN 2) -->
+                <div class="slide-item slide-fade-in hidden space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div>
+                            <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Slide 5 • Source Code C++ Utuh (Baris 34 - 64)</span>
+                            <h2 class="text-xl font-bold text-white mt-0.5">Hitung Rumus Industri & Percabangan IF-ELSE</h2>
+                        </div>
+                        <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded font-mono">C++ Source Code</span>
+                    </div>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 font-mono text-xs overflow-x-auto text-slate-300 leading-relaxed max-h-[380px]">
+                        <pre><code>        <span class="code-comment">// Perhitungan Rumus Industri (EOQ, ROP, TIC)</span>
+        <span class="code-type">float</span> eoq = <span class="code-func">sqrt</span>((<span class="code-number">2.0f</span> * D * S) / H);
+        <span class="code-type">float</span> frekuensi = D / eoq;
+        <span class="code-type">float</span> demandHarian = D / hariKerja;
+        <span class="code-type">float</span> rop = (demandHarian * L) + safetyStock;
+        <span class="code-type">float</span> totalBiaya = (frekuensi * S) + ((eoq / <span class="code-number">2.0f</span>) * H);
+
+        <span class="code-comment">// Output Hasil Analysis</span>
+        cout &lt;&lt; <span class="code-string">"\n================ HASIL ================\n"</span>;
+        cout &lt;&lt; fixed &lt;&lt; <span class="code-func">setprecision</span>(<span class="code-number">2</span>);
+        cout &lt;&lt; <span class="code-string">"EOQ (Jumlah Pesan Optimal) : "</span> &lt;&lt; <span class="code-func">round</span>(eoq) &lt;&lt; <span class="code-string">" unit\n"</span>;
+        cout &lt;&lt; <span class="code-string">"ROP (Titik Pesan Ulang)    : "</span> &lt;&lt; <span class="code-func">round</span>(rop) &lt;&lt; <span class="code-string">" unit\n"</span>;
+        cout &lt;&lt; <span class="code-string">"Total Biaya Persediaan     : Rp "</span> &lt;&lt; totalBiaya &lt;&lt; <span class="code-string">"\n"</span>;
+        cout &lt;&lt; <span class="code-string">"------------------------------------------\n"</span>;
+
+        <span class="code-comment">// 2. STRUKTUR PERCABANGAN (IF-ELSE)</span>
+        <span class="code-keyword">if</span> (stokSaatIni &lt;= rop) {
+            cout &lt;&lt; <span class="code-string">"STATUS: PERINGATAN! Stok &lt;= ROP. Segera reorder!\n"</span>;
+        } <span class="code-keyword">else</span> {
+            cout &lt;&lt; <span class="code-string">"STATUS: AMAN. Stok masih di atas ROP.\n"</span>;
+        }
+        cout &lt;&lt; <span class="code-string">"==========================================\n"</span>;
+
+        <span class="code-comment">// Kontrol Perulangan WHILE</span>
+        cout &lt;&lt; <span class="code-string">"\nHitung barang lain? (y/n): "</span>;
+        cin &gt;&gt; ulang;
+        cout &lt;&lt; <span class="code-string">"\n"</span>;
+    }
+
+    cout &lt;&lt; <span class="code-string">"Program Selesai. Terima Kasih!\n"</span>;
+    <span class="code-keyword">return</span> <span class="code-number">0</span>;
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- SLIDE 6: FLOWCHART BENTUK SIMBOL BAKU ISO (SVG) -->
+                <div class="slide-item slide-fade-in hidden space-y-4">
+                    <div class="border-b border-slate-800 pb-3 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Slide 6 • Diagram Alir Resmi</span>
+                            <h2 class="text-xl font-bold text-white mt-0.5">Flowchart Standard ISO Sesuai Kodingan C++</h2>
+                        </div>
+                        <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded font-semibold">Simbol Baku</span>
+                    </div>
+
+                    <!-- SVG FLOWCHART WITH EXACT ISO SHAPES -->
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 overflow-x-auto min-h-[440px] flex justify-center items-center">
+                        <svg width="680" height="980" viewBox="0 0 680 980" class="max-w-full h-auto text-xs font-sans">
+                            <defs>
+                                <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/>
+                                </marker>
+                            </defs>
+
+                            <!-- 1. START (Terminator / Kapsul) -->
+                            <g transform="translate(260, 20)">
+                                <rect x="0" y="0" width="160" height="40" rx="20" ry="20" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2"/>
+                                <text x="80" y="25" text-anchor="middle" fill="#ffffff" font-weight="bold">START</text>
+                            </g>
+                            <line x1="340" y1="60" x2="340" y2="90" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+
+                            <!-- 2. PREPARATION (Segi Enam / Inisialisasi) -->
+                            <g transform="translate(220, 90)">
+                                <polygon points="30,0 210,0 240,25 210,50 30,50 0,25" fill="#1e1b4b" stroke="#818cf8" stroke-width="2"/>
+                                <text x="120" y="20" text-anchor="middle" fill="#c7d2fe" font-size="11">Preparation:</text>
+                                <text x="120" y="36" text-anchor="middle" fill="#ffffff" font-weight="bold" font-size="10">ulang = 'y' | hariKerja = 300 | safetyStock = 200</text>
+                            </g>
+                            <line x1="340" y1="140" x2="340" y2="170" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+
+                            <!-- 3. DECISION WHILE (Belah Ketupat / Rhombus) -->
+                            <g transform="translate(240, 170)">
+                                <polygon points="100,0 200,45 100,90 0,45" fill="#4c1d95" stroke="#c084fc" stroke-width="2"/>
+                                <text x="100" y="40" text-anchor="middle" fill="#e9d5ff" font-size="10">while (ulang == 'y' ||</text>
+                                <text x="100" y="55" text-anchor="middle" fill="#ffffff" font-weight="bold" font-size="11">ulang == 'Y')?</text>
+                            </g>
+                            
+                            <!-- Decision While Arrow YA -->
+                            <line x1="340" y1="260" x2="340" y2="290" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="350" y="280" fill="#4ade80" font-weight="bold" font-size="11">YA</text>
+
+                            <!-- 4. INPUT MANUAL (Trapesium Terbalik) -->
+                            <g transform="translate(210, 290)">
+                                <polygon points="0,0 260,0 230,50 30,50" fill="#064e3b" stroke="#34d399" stroke-width="2"/>
+                                <text x="130" y="22" text-anchor="middle" fill="#a7f3d0" font-size="10">Input Manual (Keyboard):</text>
+                                <text x="130" y="38" text-anchor="middle" fill="#ffffff" font-weight="bold" font-size="11">namaBarang, D, S, H, L, stokSaatIni</text>
+                            </g>
+                            <line x1="340" y1="340" x2="340" y2="370" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+
+                            <!-- 5. PROCESS (Persegi Panjang Perhitungan) -->
+                            <g transform="translate(180, 370)">
+                                <rect x="0" y="0" width="320" height="90" rx="6" ry="6" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                                <text x="160" y="20" text-anchor="middle" fill="#38bdf8" font-weight="bold" font-size="11">Process Perhitungan Rumus:</text>
+                                <text x="160" y="38" text-anchor="middle" fill="#ffffff" font-size="10">eoq = sqrt((2 * D * S) / H)</text>
+                                <text x="160" y="53" text-anchor="middle" fill="#ffffff" font-size="10">frekuensi = D / eoq | demandHarian = D / 300</text>
+                                <text x="160" y="68" text-anchor="middle" fill="#ffffff" font-size="10">rop = (demandHarian * L) + 200</text>
+                                <text x="160" y="83" text-anchor="middle" fill="#ffffff" font-size="10">totalBiaya = (frekuensi * S) + ((eoq / 2) * H)</text>
+                            </g>
+                            <line x1="340" y1="460" x2="340" y2="490" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+
+                            <!-- 6. DISPLAY OUTPUT HASIL (Output Monitor / Display) -->
+                            <g transform="translate(210, 490)">
+                                <path d="M 0 0 L 230 0 C 250 12.5, 250 37.5, 230 50 L 0 50 Z" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+                                <text x="110" y="22" text-anchor="middle" fill="#fbbf24" font-size="10">Display Monitor:</text>
+                                <text x="110" y="38" text-anchor="middle" fill="#ffffff" font-weight="bold" font-size="11">Output: EOQ, ROP, Total Biaya</text>
+                            </g>
+                            <line x1="340" y1="540" x2="340" y2="570" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+
+                            <!-- 7. DECISION IF (Belah Ketupat / Percabangan) -->
+                            <g transform="translate(240, 570)">
+                                <polygon points="100,0 200,45 100,90 0,45" fill="#831843" stroke="#f472b6" stroke-width="2"/>
+                                <text x="100" y="42" text-anchor="middle" fill="#fbcfe8" font-size="10">if (stokSaatIni &lt;= rop)?</text>
+                                <text x="100" y="56" text-anchor="middle" fill="#ffffff" font-weight="bold" font-size="11">Percabangan</text>
+                            </g>
+
+                            <!-- Decision IF Lines -->
+                            <line x1="240" y1="615" x2="140" y2="615" stroke="#60a5fa" stroke-width="2"/>
+                            <line x1="140" y1="615" x2="140" y2="660" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="180" y="605" fill="#f472b6" font-weight="bold" font-size="11">YA (stok &lt;= ROP)</text>
+
+                            <line x1="440" y1="615" x2="540" y2="615" stroke="#60a5fa" stroke-width="2"/>
+                            <line x1="540" y1="615" x2="540" y2="660" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="450" y="605" fill="#4ade80" font-weight="bold" font-size="11">TIDAK</text>
+
+                            <!-- Display Alert (YA) -->
+                            <g transform="translate(30, 660)">
+                                <path d="M 0 0 L 200 0 C 220 12.5, 220 37.5, 200 50 L 0 50 Z" fill="#701a75" stroke="#f472b6" stroke-width="2"/>
+                                <text x="100" y="22" text-anchor="middle" fill="#fbcfe8" font-size="10">Display Output:</text>
+                                <text x="100" y="38" text-anchor="middle" fill="#ffffff" font-weight="bold" font-size="10">PERINGATAN! Segera reorder!</text>
+                            </g>
+
+                            <!-- Display Aman (TIDAK) -->
+                            <g transform="translate(430, 660)">
+                                <path d="M 0 0 L 200 0 C 220 12.5, 220 37.5, 200 50 L 0 50 Z" fill="#064e3b" stroke="#34d399" stroke-width="2"/>
+                                <text x="100" y="22" text-anchor="middle" fill="#a7f3d0" font-size="10">Display Output:</text>
+                                <text x="100" y="38" text-anchor="middle" fill="#ffffff" font-weight="bold" font-size="10">STATUS: AMAN</text>
+                            </g>
+
+                            <!-- Merge Lines to Input Ulang -->
+                            <line x1="140" y1="710" x2="140" y2="750" stroke="#60a5fa" stroke-width="2"/>
+                            <line x1="540" y1="710" x2="540" y2="750" stroke="#60a5fa" stroke-width="2"/>
+                            <line x1="140" y1="750" x2="540" y2="750" stroke="#60a5fa" stroke-width="2"/>
+                            <line x1="340" y1="750" x2="340" y2="780" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+
+                            <!-- 8. INPUT MANUAL REPEAT (Hitung Barang Lain?) -->
+                            <g transform="translate(210, 780)">
+                                <polygon points="0,0 260,0 230,45 30,45" fill="#064e3b" stroke="#34d399" stroke-width="2"/>
+                                <text x="130" y="20" text-anchor="middle" fill="#a7f3d0" font-size="10">Input Manual:</text>
+                                <text x="130" y="34" text-anchor="middle" fill="#ffffff" font-weight="bold" font-size="11">Hitung barang lain? (cin >> ulang)</text>
+                            </g>
+
+                            <!-- Loop Back Line to While -->
+                            <line x1="340" y1="825" x2="340" y2="850" stroke="#60a5fa" stroke-width="2"/>
+                            <line x1="340" y1="850" x2="80" y2="850" stroke="#60a5fa" stroke-width="2"/>
+                            <line x1="80" y1="850" x2="80" y2="215" stroke="#60a5fa" stroke-width="2"/>
+                            <line x1="80" y1="215" x2="240" y2="215" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="90" y="842" fill="#38bdf8" font-weight="bold" font-size="11">Looping Kembali ke While</text>
+
+                            <!-- While TIDAK Arrow to END -->
+                            <line x1="440" y1="215" x2="600" y2="215" stroke="#60a5fa" stroke-width="2"/>
+                            <line x1="600" y1="215" x2="600" y2="890" stroke="#60a5fa" stroke-width="2"/>
+                            <line x1="600" y1="890" x2="420" y2="890" stroke="#60a5fa" stroke-width="2" marker-end="url(#arrow)"/>
+                            <text x="460" y="205" fill="#ef4444" font-weight="bold" font-size="11">TIDAK (ulang != 'y')</text>
+
+                            <!-- 9. END (Terminator) -->
+                            <g transform="translate(260, 870)">
+                                <rect x="0" y="0" width="160" height="40" rx="20" ry="20" fill="#991b1b" stroke="#f87171" stroke-width="2"/>
+                                <text x="80" y="25" text-anchor="middle" fill="#ffffff" font-weight="bold">END</text>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- KETERANGAN SIMBOL STANDAR ISO -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-[11px] pt-2">
+                        <div class="bg-slate-900 p-2 rounded border border-slate-800 text-center">
+                            <span class="block font-bold text-blue-400">Kapsul</span>
+                            <span class="text-slate-400">Terminator (Start/End)</span>
+                        </div>
+                        <div class="bg-slate-900 p-2 rounded border border-slate-800 text-center">
+                            <span class="block font-bold text-indigo-400">Segi Enam</span>
+                            <span class="text-slate-400">Preparation (Inisialisasi)</span>
+                        </div>
+                        <div class="bg-slate-900 p-2 rounded border border-slate-800 text-center">
+                            <span class="block font-bold text-emerald-400">Trapesium</span>
+                            <span class="text-slate-400">Manual Input (Keyboard)</span>
+                        </div>
+                        <div class="bg-slate-900 p-2 rounded border border-slate-800 text-center">
+                            <span class="block font-bold text-sky-400">Persegi Panjang</span>
+                            <span class="text-slate-400">Process (Rumus Hitung)</span>
+                        </div>
+                        <div class="bg-slate-900 p-2 rounded border border-slate-800 text-center">
+                            <span class="block font-bold text-purple-400">Belah Ketupat</span>
+                            <span class="text-slate-400">Decision (While & If)</span>
+                        </div>
+                        <div class="bg-slate-900 p-2 rounded border border-slate-800 text-center">
+                            <span class="block font-bold text-amber-400">Layar Lengkung</span>
+                            <span class="text-slate-400">Display (Monitor)</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SLIDE NAVIGATION FOOTER -->
+            <div class="pt-6 border-t border-slate-800/80 flex items-center justify-between relative z-10">
+                <div class="text-xs font-medium text-slate-400">
+                    Slide <strong id="currentSlideNum" class="text-white">1</strong> dari <strong class="text-white">6</strong>
+                </div>
+
+                <!-- Slide Dots -->
+                <div class="hidden sm:flex items-center gap-1.5" id="slideDots">
+                    <button onclick="goToSlide(0)" class="w-2.5 h-2.5 rounded-full bg-blue-500 transition-all"></button>
+                    <button onclick="goToSlide(1)" class="w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-slate-500 transition-all"></button>
+                    <button onclick="goToSlide(2)" class="w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-slate-500 transition-all"></button>
+                    <button onclick="goToSlide(3)" class="w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-slate-500 transition-all"></button>
+                    <button onclick="goToSlide(4)" class="w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-slate-500 transition-all"></button>
+                    <button onclick="goToSlide(5)" class="w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-slate-500 transition-all"></button>
+                </div>
+
+                <!-- Prev/Next -->
+                <div class="flex items-center gap-2">
+                    <button onclick="prevSlide()" id="btnPrev" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center gap-1.5">
+                        <i class="fas fa-chevron-left"></i> Sebelumnya
+                    </button>
+                    <button onclick="nextSlide()" id="btnNext" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-lg shadow-blue-600/20 transition flex items-center gap-1.5">
+                        Selanjutnya <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="glass-card border-t border-slate-800/80 px-4 py-3 text-center text-xs text-slate-500">
+        Program Optimasi Persediaan Gudang (EOQ & ROP) • Bahasa Pemrograman C++
+    </footer>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-blue-600 text-white px-4 py-2.5 rounded-xl shadow-2xl transition duration-300 transform translate-y-20 opacity-0 text-xs font-semibold flex items-center gap-2 z-50">
+        <i class="fas fa-check-circle text-sm"></i> <span id="toastMsg">Kode berhasil disalin!</span>
+    </div>
+
+    <!-- JAVASCRIPT CONTROLLERS -->
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 6;
+
+        function updateSlideView() {
+            const slides = document.querySelectorAll('.slide-item');
+            slides.forEach((s, idx) => {
+                if (idx === currentSlide) {
+                    s.classList.remove('hidden');
+                    s.classList.add('block');
+                } else {
+                    s.classList.add('hidden');
+                    s.classList.remove('block');
+                }
+            });
+
+            document.getElementById('currentSlideNum').innerText = currentSlide + 1;
+            document.getElementById('btnPrev').disabled = (currentSlide === 0);
+            
+            if (currentSlide === totalSlides - 1) {
+                document.getElementById('btnNext').innerText = "Selesai";
+            } else {
+                document.getElementById('btnNext').innerHTML = 'Selanjutnya <i class="fas fa-chevron-right"></i>';
+            }
+
+            const dots = document.querySelectorAll('#slideDots button');
+            dots.forEach((d, idx) => {
+                if (idx === currentSlide) {
+                    d.className = "w-6 h-2.5 rounded-full bg-blue-500 transition-all";
+                } else {
+                    d.className = "w-2.5 h-2.5 rounded-full bg-slate-700 hover:bg-slate-500 transition-all";
+                }
+            });
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlideView();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlideView();
+            }
+        }
+
+        function goToSlide(idx) {
+            currentSlide = idx;
+            updateSlideView();
+        }
+
+        function runSimulation() {
+            const D = parseFloat(document.getElementById('simD').value) || 0;
+            const S = parseFloat(document.getElementById('simS').value) || 0;
+            const H = parseFloat(document.getElementById('simH').value) || 0;
+            const L = parseFloat(document.getElementById('simL').value) || 0;
+            const stok = parseFloat(document.getElementById('simStok').value) || 0;
+
+            const hariKerja = 300.0;
+            const safetyStock = 200.0;
+
+            if (H > 0 && D > 0) {
+                const eoq = Math.sqrt((2.0 * D * S) / H);
+                const frekuensi = D / eoq;
+                const demandHarian = D / hariKerja;
+                const rop = (demandHarian * L) + safetyStock;
+                const totalBiaya = (frekuensi * S) + ((eoq / 2.0) * H);
+
+                document.getElementById('outEOQ').innerText = Math.round(eoq) + " unit";
+                document.getElementById('outROP').innerText = Math.round(rop) + " unit";
+                document.getElementById('outTIC').innerText = "Rp " + Math.round(totalBiaya).toLocaleString('id-ID');
+
+                const outStatus = document.getElementById('outStatus');
+                if (stok <= rop) {
+                    outStatus.innerText = "PERINGATAN! Segera Reorder!";
+                    outStatus.className = "text-sm font-bold text-pink-400 animate-pulse";
+                } else {
+                    outStatus.innerText = "AMAN (Stok di atas ROP)";
+                    outStatus.className = "text-sm font-bold text-emerald-400";
+                }
+            }
+        }
+
+        ['simD', 'simS', 'simH', 'simL', 'simStok'].forEach(id => {
+            document.getElementById(id).addEventListener('input', runSimulation);
+        });
+
+        function copyCppCode() {
+            const code = `#include <iostream>
+#include <string>
+#include <cmath>
+#include <iomanip>
+
+using namespace std;
+
+int main() {
+    char ulang = 'y';
+
+    // 1. STRUKTUR PERULANGAN (WHILE)
+    while (ulang == 'y' || ulang == 'Y') {
+        string namaBarang;
+        float D, S, H, L, stokSaatIni;
+
+        // Nilai Otomatis / Konstan
+        float hariKerja = 300.0f;
+        float safetyStock = 200.0f;
+
+        cout << "==========================================\n";
+        cout << "     PROGRAM OPTIMASI PERSEDIAAN (EOQ)    \n";
+        cout << "==========================================\n";
+
+        // Input Data Persediaan
+        cout << "Nama Barang               : ";
+        cin >> ws;
+        getline(cin, namaBarang);
+
+        cout << "Permintaan Tahunan (D)    : "; cin >> D;
+        cout << "Biaya Pesan (S) [Rp]      : "; cin >> S;
+        cout << "Biaya Simpan/Unit (H) [Rp]: "; cin >> H;
+        cout << "Lead Time (L) [Hari]      : "; cin >> L;
+        cout << "Stok Gudang Saat Ini      : "; cin >> stokSaatIni;
+
+        // Perhitungan Rumus Industri (EOQ, ROP, TIC)
+        float eoq = sqrt((2.0f * D * S) / H);
+        float frekuensi = D / eoq;
+        float demandHarian = D / hariKerja;
+        float rop = (demandHarian * L) + safetyStock;
+        float totalBiaya = (frekuensi * S) + ((eoq / 2.0f) * H);
+
+        // Output Hasil Analysis
+        cout << "\n================ HASIL ================\n";
+        cout << fixed << setprecision(2);
+        cout << "EOQ (Jumlah Pesan Optimal) : " << round(eoq) << " unit\n";
+        cout << "ROP (Titik Pesan Ulang)    : " << round(rop) << " unit\n";
+        cout << "Total Biaya Persediaan     : Rp " << totalBiaya << "\n";
+        cout << "------------------------------------------\n";
+
+        // 2. STRUKTUR PERCABANGAN (IF-ELSE)
+        if (stokSaatIni <= rop) {
+            cout << "STATUS: PERINGATAN! Stok <= ROP. Segera reorder!\n";
+        } else {
+            cout << "STATUS: AMAN. Stok masih di atas ROP.\n";
+        }
+        cout << "==========================================\n";
+
+        // Kontrol Perulangan WHILE
+        cout << "\nHitung barang lain? (y/n): ";
+        cin >> ulang;
+        cout << "\n";
+    }
+
+    cout << "Program Selesai. Terima Kasih!\n";
+    return 0;
+}`;
+
+            const el = document.createElement('textarea');
+            el.value = code;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+
+            showToast("Kode C++ utuh berhasil disalin!");
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById("toast");
+            document.getElementById("toastMsg").innerText = msg;
+            toast.classList.remove("translate-y-20", "opacity-0");
+            setTimeout(() => {
+                toast.classList.add("translate-y-20", "opacity-0");
+            }, 3000);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "ArrowRight") nextSlide();
+            if (e.key === "ArrowLeft") prevSlide();
+        });
+
+        runSimulation();
+        updateSlideView();
+    </script>
+</body>
+</html>
